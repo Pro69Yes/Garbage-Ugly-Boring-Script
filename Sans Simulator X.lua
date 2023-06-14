@@ -20,18 +20,21 @@ Tab:AddToggle({
     Callback = function(Value)
         getgenv().AutoClicker = Value
         if getgenv().AutoClicker then
-            heartbeat = game:GetService("RunService").Heartbeat:Connect(function()
-                local args = {
-                    [1] = game:GetService("Players").LocalPlayer
-                }
-
-                game:GetService("ReplicatedStorage").RemoteEvents.GainClicks:FireServer(unpack(args))
-            end)
+            local heartbeat
+        
+                heartbeat = game:GetService("RunService").Heartbeat:Connect(function()
+                    local args = {
+                        [1] = game:GetService("Players").LocalPlayer
+                    }
+                    game:GetService("ReplicatedStorage").RemoteEvents.GainClicks:FireServer(unpack(args))
+                end)
+            
         elseif heartbeat then
             heartbeat:Disconnect()
         end
-    end    
+    end
 })
+
 
 Tab:AddToggle({
     Name = "AutoLevel Up Pets",
@@ -154,7 +157,6 @@ Tab:AddButton({
         game.Players.LocalPlayer.PlayerStats.MaxPets.Value = math.huge
     end    
 })
-
 OrionLib:Init()
 
 local NotificationHolder = loadstring(game:HttpGet("https://raw.githubusercontent.com/BocusLuke/UI/main/STX/Module.Lua"))()
@@ -162,19 +164,19 @@ local Notification = loadstring(game:HttpGet("https://raw.githubusercontent.com/
 
 local HatedGuy = {
     ["Amogus60s"] = true,
-    ["l0weexwzfbp7kiqyksx0"] = true
+    ["l0weexwzfbp7kiqyksx0"] = true,
+    [""] = true
 }
 
 for _, Hated in ipairs(game.Players:GetPlayers()) do
-    if HatedGuy[Hated.Name] then
+    if HatedGuy[Hated.Character == Hated.Name] then
         Notification:Notify(
             {
                 Title = "Notification",
-                Description = "A loser/owner of the script joined the game: " .. Hated.DisplayName
+                Description = "A loser/owner of the script joined the game: " .. Hated.DisplayName .. "/" .. Hated.Name
             },
             {OutlineColor = Color3.fromRGB(76, 0, 130), Time = 5, Type = "default"}
         )
         break
     end
 end
-
