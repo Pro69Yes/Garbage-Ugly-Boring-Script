@@ -21,7 +21,7 @@ Tab:AddToggle({
         getgenv().AutoClicker = Value
         if getgenv().AutoClicker then
             local heartbeat
-        
+            
                 heartbeat = game:GetService("RunService").Heartbeat:Connect(function()
                     local args = {
                         [1] = game:GetService("Players").LocalPlayer
@@ -157,6 +157,35 @@ Tab:AddButton({
         game.Players.LocalPlayer.PlayerStats.MaxPets.Value = math.huge
     end    
 })
+local Tab = Window:MakeTab({
+    Name = "Private",
+    Icon = "rbxassetid://4483345998",
+    PremiumOnly = false
+})
+getgenv().MultipleValue = nil
+Tab:AddTextbox({
+	Name = "Value",
+	Default = "",
+	TextDisappear = true,
+	Callback = function(Value)
+	getgenv().MultipleValue = Value or 1
+	end	  
+})
+
+Tab:AddButton({
+	Name = "Lol",
+	Callback = function()
+  game.Players.LocalPlayer.Character.Humanoid.Health = 0
+  wait()
+	  for i = 1,getgenv().MultipleValue do
+    local args = {
+    [1] = 1
+}
+
+game:GetService("ReplicatedStorage"):WaitForChild("RemoteEvents"):WaitForChild("PetEquipped"):FireServer(unpack(args))
+end
+  end	    
+})
 OrionLib:Init()
 
 local NotificationHolder = loadstring(game:HttpGet("https://raw.githubusercontent.com/BocusLuke/UI/main/STX/Module.Lua"))()
@@ -164,8 +193,8 @@ local Notification = loadstring(game:HttpGet("https://raw.githubusercontent.com/
 
 local HatedGuy = {
     ["Amogus60s"] = true,
-    ["l0weexwzfbp7kiqyksx0"] = true,
-    [""] = true
+    ["l0weexwzfbp7kiqyksx0"] = false,
+    ["LzQfOauYINSaNe572"] = true
 }
 
 for _, Hated in ipairs(game.Players:GetPlayers()) do
@@ -180,3 +209,4 @@ for _, Hated in ipairs(game.Players:GetPlayers()) do
         break
     end
 end
+
