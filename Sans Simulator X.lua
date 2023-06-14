@@ -20,8 +20,7 @@ Tab:AddToggle({
     Callback = function(Value)
         getgenv().AutoClicker = Value
         if getgenv().AutoClicker then
-            local heartbeat
-            
+        
                 heartbeat = game:GetService("RunService").Heartbeat:Connect(function()
                     local args = {
                         [1] = game:GetService("Players").LocalPlayer
@@ -115,7 +114,7 @@ Tab:AddToggle({
     Callback = function(Value)
         getgenv().AutoOpenEggsSingle = Value
         while getgenv().AutoOpenEggsSingle do
-            wait(getgenv().AutoOpenEggsCooldown)
+            task.wait(getgenv().AutoOpenEggsCooldown)
             local args = {
                 [1] = getgenv().EggOption
             }
@@ -131,7 +130,7 @@ Tab:AddToggle({
     Callback = function(Value)
         getgenv().AutoOpenEggsTriple = Value 
         while getgenv().AutoOpenEggsTriple do
-            wait(getgenv().AutoOpenEggsCooldown)
+           task.wait(getgenv().AutoOpenEggsCooldown)
             local args = {
                 [1] = getgenv().EggOption
             }
@@ -140,7 +139,55 @@ Tab:AddToggle({
         end
     end    
 })
+Tab:AddToggle({
+    Name = "No Egg Animation",
+    Default = false,
+    Callback = function(Value)
+        getgenv().NoEggAnimation = Value
+        if getgenv().NoEggAnimation then
+            heartbeat = game:GetService("RunService").Heartbeat:Connect(function()
+                for i, EggAnimation in ipairs(game.Players.LocalPlayer.PlayerGui:GetChildren()) do
+                    if EggAnimation.Name == "Flash" or EggAnimation.Name == "ScreenGui" or EggAnimation.Name == "Sound" then
+                        EggAnimation:Destroy()
+                    end
+                end
+            end)
+        elseif heartbeat then
+            heartbeat:Disconnect()
+        end
+    end
+})
 
+getgenv().AutoDeletePetName = nil
+Tab:AddTextbox({
+	Name = "Pets Name",
+	Default = "",
+	TextDisappear = true,
+	Callback = function(Value)
+		getgenv().AutoDeletePetName = Value
+	end	  
+})
+Tab:AddToggle({
+        Name = "AutoDelete Pets",
+        Default = false,
+        Callback = function(Value)
+            getgenv().AutoDeletePets = Value 
+            while getgenv().AutoDeletePets do
+                wait()
+                for i, Petlol in ipairs(game.Players.LocalPlayer.Pets:GetDescendants()) do
+                    if Petlol.Name == tostring(getgenv().AutoDeletePetName) then
+                        local args = {
+    [1] = Petlol.Pet_ID.Value
+}
+
+game:GetService("ReplicatedStorage"):WaitForChild("RemoteEvents"):WaitForChild("PetDelete"):FireServer(unpack(args))
+
+                    end
+                end
+            end
+        end
+    })
+  
 local Tab = Window:MakeTab({
     Name = "Misc",
     Icon = "rbxassetid://4483345998",
@@ -157,35 +204,7 @@ Tab:AddButton({
         game.Players.LocalPlayer.PlayerStats.MaxPets.Value = math.huge
     end    
 })
-local Tab = Window:MakeTab({
-    Name = "Private",
-    Icon = "rbxassetid://4483345998",
-    PremiumOnly = false
-})
-getgenv().MultipleValue = nil
-Tab:AddTextbox({
-	Name = "Value",
-	Default = "",
-	TextDisappear = true,
-	Callback = function(Value)
-	getgenv().MultipleValue = Value or 1
-	end	  
-})
 
-Tab:AddButton({
-	Name = "Lol",
-	Callback = function()
-  game.Players.LocalPlayer.Character.Humanoid.Health = 0
-  wait()
-	  for i = 1,getgenv().MultipleValue do
-    local args = {
-    [1] = 1
-}
-
-game:GetService("ReplicatedStorage"):WaitForChild("RemoteEvents"):WaitForChild("PetEquipped"):FireServer(unpack(args))
-end
-  end	    
-})
 OrionLib:Init()
 
 local NotificationHolder = loadstring(game:HttpGet("https://raw.githubusercontent.com/BocusLuke/UI/main/STX/Module.Lua"))()
@@ -198,7 +217,7 @@ local HatedGuy = {
 }
 
 for _, Hated in ipairs(game.Players:GetPlayers()) do
-    if HatedGuy[Hated.Character == Hated.Name] then
+    if HatedGuy[Hated.Name] then
         Notification:Notify(
             {
                 Title = "Notification",
