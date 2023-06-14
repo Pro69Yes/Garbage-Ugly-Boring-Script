@@ -31,6 +31,47 @@ Tab:AddToggle({
         end
     end    
 })
+Tab:AddToggle({
+	Name = "AutoLevel Up Pets",
+	Default = false,
+	Callback = function(Value)
+		getgenv().AutoLevelUp = Value
+	while getgenv().AutoLevelUp do task.wait()
+firetouchinterest(game.Workspace.XPorb,game.Players.LocalPlayer.Character.HumanoidRootPart,0)
+firetouchinterest(game.Workspace.XPorb,game.Players.LocalPlayer.Character.HumanoidRootPart,1)
+	end    
+	end
+})
+Tab:AddButton({
+	Name = "Equip All pets",
+	Callback = function()
+      		for i,pets in ipairs(game.Players.LocalPlayer.Pets:GetChildren()) do
+    if pets.Equipped.Value == false then
+        local args = {
+            pets.Pet_ID.Value
+        }
+
+        game:GetService("ReplicatedStorage"):WaitForChild("RemoteEvents"):WaitForChild("PetEquipped"):FireServer(unpack(args))
+        pets.Equipped.Value = true
+    end
+end
+  	end    
+})
+Tab:AddButton({
+	Name = "Unequip All Pets",
+	Callback = function()
+      		for i,pets in ipairs(game.Players.LocalPlayer.Pets:GetChildren()) do 
+      		  if pets.Equipped.Value == true then
+      		  local args = {
+    [1] = pets.Pet_ID.Value
+}
+
+game:GetService("ReplicatedStorage"):WaitForChild("RemoteEvents"):WaitForChild("PetUnequipped"):FireServer(unpack(args))
+pets.Equipped.Value = false
+end
+end
+  	end    
+})
 
 local EggsList = {}
 for i,lol in ipairs(game.Workspace.Eggs:GetChildren()) do table.insert(EggsList,lol.Name)
@@ -98,6 +139,11 @@ Tab:AddButton({
       		game.Players.LocalPlayer.PlayerStats.MaxPets.Value = math.huge
   	end    
 })
+local Section = Tab:AddSection({
+	Name = "Optimization Section"
+})
+OrionLib:Init()
+
 local NotificationHolder = loadstring(game:HttpGet("https://raw.githubusercontent.com/BocusLuke/UI/main/STX/Module.Lua"))()
   local Notification = loadstring(game:HttpGet("https://raw.githubusercontent.com/BocusLuke/UI/main/STX/Client.Lua"))()
   
@@ -119,4 +165,15 @@ local NotificationHolder = loadstring(game:HttpGet("https://raw.githubuserconten
     end
   end
   
-  
+ local blacklistKidLLLLLLLL = {
+      ["no"] = true,
+      [""] = true
+   }
+   
+   for _, Blacklist in ipairs(game.Players:GetPlayers()) do 
+      if blacklistKidLLLLLLLL[Blacklist.Name] or (Blacklist.Character and Blacklist.Character.Name == Blacklist.Name) then
+         Blacklist:Kick("imagine getting Blacklisted🤣🤣🤣")
+      end
+   end
+   
+   
