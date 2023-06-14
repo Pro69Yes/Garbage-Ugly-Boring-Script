@@ -50,14 +50,14 @@ Tab:AddTextbox({
 	Default = "0.5",
 	TextDisappear = true,
 	Callback = function(Value)
-		getgenv().AutoOpenEggsCooldown = Value
+		getgenv().AutoOpenEggsCooldown = Value or 0.5
 	end	  
 })
 Tab:AddToggle({
 	Name = "AutoOpen Egg {Single}",
 	Default = false,
 	Callback = function(Value)
-		getgenv().AutoOpenEggsSingle = Value or 0.5
+		getgenv().AutoOpenEggsSingle = Value
  while getgenv().AutoOpenEggsSingle do wait(getgenv().AutoOpenEggsCooldown)
    local args = {
     [1] = getgenv().EggOption
@@ -119,4 +119,4 @@ local NotificationHolder = loadstring(game:HttpGet("https://raw.githubuserconten
     end
   end
   
-   
+  
